@@ -1,8 +1,20 @@
+import 'bloc/update_available_bloc.dart';
+import 'models/update_available_model.dart';
 import 'package:faheem_s_application/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
 class UpdateAvailableBottomsheet extends StatelessWidget {
+  static Widget builder(BuildContext context) {
+    return BlocProvider<UpdateAvailableBloc>(
+      create: (context) => UpdateAvailableBloc(UpdateAvailableState(
+        updateAvailableModelObj: UpdateAvailableModel(),
+      ))
+        ..add(UpdateAvailableInitialEvent()),
+      child: UpdateAvailableBottomsheet(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

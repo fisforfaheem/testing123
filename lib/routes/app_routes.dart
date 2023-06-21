@@ -69,27 +69,30 @@ class AppRoutes {
 
   static const String appNavigationScreen = '/app_navigation_screen';
 
-  static Map<String, WidgetBuilder> routes = {
-    loginScreen: (context) => LoginScreen(),
-    splashScreenOneScreen: (context) => SplashScreenOneScreen(),
-    onBoardingScreenOneScreen: (context) => OnBoardingScreenOneScreen(),
-    onBoardingScreenTwoScreen: (context) => OnBoardingScreenTwoScreen(),
-    onBoardingScreenThreeScreen: (context) => OnBoardingScreenThreeScreen(),
-    splashScreen: (context) => SplashScreen(),
-    registerScreen: (context) => RegisterScreen(),
-    enterPasscodeOneScreen: (context) => EnterPasscodeOneScreen(),
-    enterPasscodeTwoScreen: (context) => EnterPasscodeTwoScreen(),
-    enterPasscodeScreen: (context) => EnterPasscodeScreen(),
-    profileOneScreen: (context) => ProfileOneScreen(),
-    homeContainerScreen: (context) => HomeContainerScreen(),
-    interviewScreenTwoScreen: (context) => InterviewScreenTwoScreen(),
-    scoreOneScreen: (context) => ScoreOneScreen(),
-    scoreScreen: (context) => ScoreScreen(),
-    preferencesScreen: (context) => PreferencesScreen(),
-    settingsOneScreen: (context) => SettingsOneScreen(),
-    profileScreen: (context) => ProfileScreen(),
-    settingsScreen: (context) => SettingsScreen(),
-    errpr404Screen: (context) => Errpr404Screen(),
-    appNavigationScreen: (context) => AppNavigationScreen()
-  };
+  static const String initialRoute = '/initialRoute';
+
+  static Map<String, WidgetBuilder> get routes => {
+        loginScreen: LoginScreen.builder,
+        splashScreenOneScreen: SplashScreenOneScreen.builder,
+        onBoardingScreenOneScreen: OnBoardingScreenOneScreen.builder,
+        onBoardingScreenTwoScreen: OnBoardingScreenTwoScreen.builder,
+        onBoardingScreenThreeScreen: OnBoardingScreenThreeScreen.builder,
+        splashScreen: SplashScreen.builder,
+        registerScreen: RegisterScreen.builder,
+        enterPasscodeOneScreen: EnterPasscodeOneScreen.builder,
+        enterPasscodeTwoScreen: EnterPasscodeTwoScreen.builder,
+        enterPasscodeScreen: EnterPasscodeScreen.builder,
+        profileOneScreen: ProfileOneScreen.builder,
+        homeContainerScreen: HomeContainerScreen.builder,
+        interviewScreenTwoScreen: InterviewScreenTwoScreen.builder,
+        scoreOneScreen: ScoreOneScreen.builder,
+        scoreScreen: ScoreScreen.builder,
+        preferencesScreen: PreferencesScreen.builder,
+        settingsOneScreen: SettingsOneScreen.builder,
+        profileScreen: ProfileScreen.builder,
+        settingsScreen: SettingsScreen.builder,
+        errpr404Screen: Errpr404Screen.builder,
+        appNavigationScreen: AppNavigationScreen.builder,
+        initialRoute: SplashScreen.builder
+      };
 }

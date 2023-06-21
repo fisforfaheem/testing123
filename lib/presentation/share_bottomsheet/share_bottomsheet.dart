@@ -1,8 +1,20 @@
+import 'bloc/share_bloc.dart';
+import 'models/share_model.dart';
 import 'package:faheem_s_application/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
 class ShareBottomsheet extends StatelessWidget {
+  static Widget builder(BuildContext context) {
+    return BlocProvider<ShareBloc>(
+      create: (context) => ShareBloc(ShareState(
+        shareModelObj: ShareModel(),
+      ))
+        ..add(ShareInitialEvent()),
+      child: ShareBottomsheet(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

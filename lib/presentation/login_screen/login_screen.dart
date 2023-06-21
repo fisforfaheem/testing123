@@ -1,4 +1,7 @@
+import 'bloc/login_bloc.dart';
+import 'models/login_model.dart';
 import 'package:faheem_s_application/core/app_export.dart';
+import 'package:faheem_s_application/core/utils/validation_functions.dart';
 import 'package:faheem_s_application/widgets/custom_button.dart';
 import 'package:faheem_s_application/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +9,14 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
 
 // ignore_for_file: must_be_immutable
 class LoginScreen extends StatelessWidget {
-  TextEditingController usernameController = TextEditingController();
-
-  TextEditingController passwordController = TextEditingController();
-
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  static Widget builder(BuildContext context) {
+    return BlocProvider<LoginBloc>(
+        create: (context) => LoginBloc(LoginState(loginModelObj: LoginModel()))
+          ..add(LoginInitialEvent()),
+        child: LoginScreen());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,50 +82,87 @@ class LoginScreen extends StatelessWidget {
                                             width: getSize(128),
                                             alignment: Alignment.bottomRight)
                                       ]))),
-                          CustomTextFormField(
-                              focusNode: FocusNode(),
-                              autofocus: true,
-                              controller: usernameController,
-                              hintText: "Email / Username",
-                              margin: getMargin(left: 28, top: 66, right: 29),
-                              variant: TextFormFieldVariant.OutlineBluegray900,
-                              padding: TextFormFieldPadding.PaddingT21,
-                              fontStyle:
-                                  TextFormFieldFontStyle.RobotoRomanMedium15,
-                              textInputType: TextInputType.emailAddress,
-                              prefix: Container(
-                                  margin: getMargin(
-                                      left: 21, top: 15, right: 15, bottom: 15),
-                                  child: CustomImageView(
-                                      svgPath: ImageConstant.imgFrame30)),
-                              prefixConstraints: BoxConstraints(
-                                  maxHeight: getVerticalSize(60))),
-                          CustomTextFormField(
-                              focusNode: FocusNode(),
-                              autofocus: true,
-                              controller: passwordController,
-                              hintText: "Password",
-                              margin: getMargin(left: 28, top: 20, right: 29),
-                              variant: TextFormFieldVariant.OutlineBluegray900,
-                              padding: TextFormFieldPadding.PaddingT21,
-                              fontStyle:
-                                  TextFormFieldFontStyle.RobotoRomanMedium15,
-                              textInputAction: TextInputAction.done,
-                              textInputType: TextInputType.visiblePassword,
-                              prefix: Container(
-                                  margin: getMargin(
-                                      left: 21, top: 15, right: 15, bottom: 15),
-                                  child: CustomImageView(
-                                      svgPath:
-                                          ImageConstant.imgFrame30Gray500)),
-                              prefixConstraints: BoxConstraints(
-                                  maxHeight: getVerticalSize(60)),
-                              isObscureText: true),
+                          BlocSelector<LoginBloc, LoginState,
+                                  TextEditingController?>(
+                              selector: (state) => state.usernameController,
+                              builder: (context, usernameController) {
+                                return CustomTextFormField(
+                                    focusNode: FocusNode(),
+                                    autofocus: true,
+                                    controller: usernameController,
+                                    hintText: "msg_email_username".tr,
+                                    margin:
+                                        getMargin(left: 28, top: 66, right: 29),
+                                    variant:
+                                        TextFormFieldVariant.OutlineBluegray900,
+                                    padding: TextFormFieldPadding.PaddingT21,
+                                    fontStyle: TextFormFieldFontStyle
+                                        .RobotoRomanMedium15,
+                                    textInputType: TextInputType.emailAddress,
+                                    prefix: Container(
+                                        margin: getMargin(
+                                            left: 21,
+                                            top: 15,
+                                            right: 15,
+                                            bottom: 15),
+                                        child: CustomImageView(
+                                            svgPath: ImageConstant.imgFrame30)),
+                                    prefixConstraints: BoxConstraints(
+                                        maxHeight: getVerticalSize(60)),
+                                    validator: (value) {
+                                      if (value == null ||
+                                          (!isValidEmail(value,
+                                              isRequired: true))) {
+                                        return "Please enter valid email";
+                                      }
+                                      return null;
+                                    });
+                              }),
+                          BlocSelector<LoginBloc, LoginState,
+                                  TextEditingController?>(
+                              selector: (state) => state.passwordController,
+                              builder: (context, passwordController) {
+                                return CustomTextFormField(
+                                    focusNode: FocusNode(),
+                                    autofocus: true,
+                                    controller: passwordController,
+                                    hintText: "lbl_password".tr,
+                                    margin:
+                                        getMargin(left: 28, top: 20, right: 29),
+                                    variant:
+                                        TextFormFieldVariant.OutlineBluegray900,
+                                    padding: TextFormFieldPadding.PaddingT21,
+                                    fontStyle: TextFormFieldFontStyle
+                                        .RobotoRomanMedium15,
+                                    textInputAction: TextInputAction.done,
+                                    textInputType:
+                                        TextInputType.visiblePassword,
+                                    prefix: Container(
+                                        margin: getMargin(
+                                            left: 21,
+                                            top: 15,
+                                            right: 15,
+                                            bottom: 15),
+                                        child: CustomImageView(
+                                            svgPath: ImageConstant
+                                                .imgFrame30Gray500)),
+                                    prefixConstraints: BoxConstraints(
+                                        maxHeight: getVerticalSize(60)),
+                                    validator: (value) {
+                                      if (value == null ||
+                                          (!isValidPassword(value,
+                                              isRequired: true))) {
+                                        return "Please enter valid password";
+                                      }
+                                      return null;
+                                    },
+                                    isObscureText: true);
+                              }),
                           Align(
                               alignment: Alignment.centerRight,
                               child: Padding(
                                   padding: getPadding(top: 15, right: 29),
-                                  child: Text("Forgot Password?",
+                                  child: Text("msg_forgot_password".tr,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtPoppinsRegular14
@@ -129,14 +172,14 @@ class LoginScreen extends StatelessWidget {
                           CustomButton(
                               height: getVerticalSize(49),
                               width: getHorizontalSize(188),
-                              text: "Login",
+                              text: "lbl_login".tr,
                               margin: getMargin(top: 22),
                               onTap: () {
                                 onTapLogin(context);
                               }),
                           Padding(
                               padding: getPadding(top: 22),
-                              child: Text("or Sign in with",
+                              child: Text("lbl_or_sign_in_with".tr,
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
                                   style: AppStyle.txtPoppinsRegular14Black900)),
@@ -171,13 +214,13 @@ class LoginScreen extends StatelessWidget {
                                   ])),
                           Padding(
                               padding: getPadding(top: 80),
-                              child: Text("Don’t have an account?",
+                              child: Text("msg_don_t_have_an_account".tr,
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
                                   style: AppStyle.txtPoppinsRegular16)),
                           Padding(
                               padding: getPadding(top: 13, bottom: 5),
-                              child: Text("Register Now",
+                              child: Text("lbl_register_now".tr,
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
                                   style: AppStyle.txtPoppinsRegular20.copyWith(
@@ -186,10 +229,12 @@ class LoginScreen extends StatelessWidget {
   }
 
   onTapImgArrowleft(BuildContext context) {
-    Navigator.pop(context);
+    NavigatorService.goBack();
   }
 
   onTapLogin(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.profileOneScreen);
+    NavigatorService.pushNamed(
+      AppRoutes.profileOneScreen,
+    );
   }
 }

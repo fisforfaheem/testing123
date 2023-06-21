@@ -1,17 +1,18 @@
+import 'bloc/profile_one_bloc.dart';
+import 'models/profile_one_model.dart';
 import 'package:faheem_s_application/core/app_export.dart';
 import 'package:faheem_s_application/widgets/custom_button.dart';
 import 'package:faheem_s_application/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 
-// ignore_for_file: must_be_immutable
 class ProfileOneScreen extends StatelessWidget {
-  TextEditingController frametwentynineController = TextEditingController();
-
-  TextEditingController frametwentysixController = TextEditingController();
-
-  TextEditingController countryController = TextEditingController();
-
-  TextEditingController cityController = TextEditingController();
+  static Widget builder(BuildContext context) {
+    return BlocProvider<ProfileOneBloc>(
+        create: (context) => ProfileOneBloc(
+            ProfileOneState(profileOneModelObj: ProfileOneModel()))
+          ..add(ProfileOneInitialEvent()),
+        child: ProfileOneScreen());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,8 @@ class ProfileOneScreen extends StatelessWidget {
                                             child: RichText(
                                                 text: TextSpan(children: [
                                                   TextSpan(
-                                                      text: "Let’s get to\n",
+                                                      text:
+                                                          "lbl_let_s_get_to".tr,
                                                       style: TextStyle(
                                                           color: ColorConstant
                                                               .black900,
@@ -49,7 +51,9 @@ class ProfileOneScreen extends StatelessWidget {
                                                           fontWeight:
                                                               FontWeight.w600)),
                                                   TextSpan(
-                                                      text: "know you better!",
+                                                      text:
+                                                          "msg_know_you_better"
+                                                              .tr,
                                                       style: TextStyle(
                                                           color: ColorConstant
                                                               .cyanA400,
@@ -72,76 +76,117 @@ class ProfileOneScreen extends StatelessWidget {
                           height: getVerticalSize(233),
                           width: getHorizontalSize(236),
                           margin: getMargin(top: 13)),
-                      CustomTextFormField(
-                          focusNode: FocusNode(),
-                          autofocus: true,
-                          controller: frametwentynineController,
-                          hintText: "-- Enter your Expertise level --",
-                          margin: getMargin(left: 28, top: 29, right: 29),
-                          variant: TextFormFieldVariant.OutlineBluegray900,
-                          padding: TextFormFieldPadding.PaddingT21,
-                          fontStyle: TextFormFieldFontStyle.RobotoRomanMedium15,
-                          prefix: Container(
-                              margin: getMargin(
-                                  left: 21, top: 15, right: 15, bottom: 15),
-                              child: CustomImageView(
-                                  svgPath:
-                                      ImageConstant.imgFrame30Gray50030x30)),
-                          prefixConstraints:
-                              BoxConstraints(maxHeight: getVerticalSize(60))),
-                      CustomTextFormField(
-                          focusNode: FocusNode(),
-                          autofocus: true,
-                          controller: frametwentysixController,
-                          hintText: "-- Please enter your industry --",
-                          margin: getMargin(left: 28, top: 17, right: 29),
-                          variant: TextFormFieldVariant.OutlineBluegray900,
-                          padding: TextFormFieldPadding.PaddingT21,
-                          fontStyle: TextFormFieldFontStyle.RobotoRomanMedium15,
-                          prefix: Container(
-                              margin: getMargin(
-                                  left: 21, top: 15, right: 15, bottom: 15),
-                              child: CustomImageView(
-                                  svgPath: ImageConstant.imgFrame3030x30)),
-                          prefixConstraints:
-                              BoxConstraints(maxHeight: getVerticalSize(60))),
-                      CustomTextFormField(
-                          focusNode: FocusNode(),
-                          autofocus: true,
-                          controller: countryController,
-                          hintText: "-- Please enter your country --",
-                          margin: getMargin(left: 28, top: 20, right: 29),
-                          variant: TextFormFieldVariant.OutlineBluegray900,
-                          padding: TextFormFieldPadding.PaddingT21,
-                          fontStyle: TextFormFieldFontStyle.RobotoRomanMedium15,
-                          prefix: Container(
-                              margin: getMargin(
-                                  left: 21, top: 15, right: 15, bottom: 15),
-                              child: CustomImageView(
-                                  svgPath: ImageConstant.imgFrame301)),
-                          prefixConstraints:
-                              BoxConstraints(maxHeight: getVerticalSize(60))),
-                      CustomTextFormField(
-                          focusNode: FocusNode(),
-                          autofocus: true,
-                          controller: cityController,
-                          hintText: "-- City --",
-                          margin: getMargin(left: 28, top: 20, right: 29),
-                          variant: TextFormFieldVariant.OutlineBluegray900,
-                          padding: TextFormFieldPadding.PaddingT21,
-                          fontStyle: TextFormFieldFontStyle.RobotoRomanMedium15,
-                          textInputAction: TextInputAction.done,
-                          prefix: Container(
-                              margin: getMargin(
-                                  left: 21, top: 15, right: 15, bottom: 15),
-                              child: CustomImageView(
-                                  svgPath: ImageConstant.imgFrame302)),
-                          prefixConstraints:
-                              BoxConstraints(maxHeight: getVerticalSize(60))),
+                      BlocSelector<ProfileOneBloc, ProfileOneState,
+                              TextEditingController?>(
+                          selector: (state) => state.frametwentynineController,
+                          builder: (context, frametwentynineController) {
+                            return CustomTextFormField(
+                                focusNode: FocusNode(),
+                                autofocus: true,
+                                controller: frametwentynineController,
+                                hintText: "msg_enter_your_expertise".tr,
+                                margin: getMargin(left: 28, top: 29, right: 29),
+                                variant:
+                                    TextFormFieldVariant.OutlineBluegray900,
+                                padding: TextFormFieldPadding.PaddingT21,
+                                fontStyle:
+                                    TextFormFieldFontStyle.RobotoRomanMedium15,
+                                prefix: Container(
+                                    margin: getMargin(
+                                        left: 21,
+                                        top: 15,
+                                        right: 15,
+                                        bottom: 15),
+                                    child: CustomImageView(
+                                        svgPath: ImageConstant
+                                            .imgFrame30Gray50030x30)),
+                                prefixConstraints: BoxConstraints(
+                                    maxHeight: getVerticalSize(60)));
+                          }),
+                      BlocSelector<ProfileOneBloc, ProfileOneState,
+                              TextEditingController?>(
+                          selector: (state) => state.frametwentysixController,
+                          builder: (context, frametwentysixController) {
+                            return CustomTextFormField(
+                                focusNode: FocusNode(),
+                                autofocus: true,
+                                controller: frametwentysixController,
+                                hintText: "msg_please_enter".tr,
+                                margin: getMargin(left: 28, top: 17, right: 29),
+                                variant:
+                                    TextFormFieldVariant.OutlineBluegray900,
+                                padding: TextFormFieldPadding.PaddingT21,
+                                fontStyle:
+                                    TextFormFieldFontStyle.RobotoRomanMedium15,
+                                prefix: Container(
+                                    margin: getMargin(
+                                        left: 21,
+                                        top: 15,
+                                        right: 15,
+                                        bottom: 15),
+                                    child: CustomImageView(
+                                        svgPath:
+                                            ImageConstant.imgFrame3030x30)),
+                                prefixConstraints: BoxConstraints(
+                                    maxHeight: getVerticalSize(60)));
+                          }),
+                      BlocSelector<ProfileOneBloc, ProfileOneState,
+                              TextEditingController?>(
+                          selector: (state) => state.countryController,
+                          builder: (context, countryController) {
+                            return CustomTextFormField(
+                                focusNode: FocusNode(),
+                                autofocus: true,
+                                controller: countryController,
+                                hintText: "msg_please_enter2".tr,
+                                margin: getMargin(left: 28, top: 20, right: 29),
+                                variant:
+                                    TextFormFieldVariant.OutlineBluegray900,
+                                padding: TextFormFieldPadding.PaddingT21,
+                                fontStyle:
+                                    TextFormFieldFontStyle.RobotoRomanMedium15,
+                                prefix: Container(
+                                    margin: getMargin(
+                                        left: 21,
+                                        top: 15,
+                                        right: 15,
+                                        bottom: 15),
+                                    child: CustomImageView(
+                                        svgPath: ImageConstant.imgFrame301)),
+                                prefixConstraints: BoxConstraints(
+                                    maxHeight: getVerticalSize(60)));
+                          }),
+                      BlocSelector<ProfileOneBloc, ProfileOneState,
+                              TextEditingController?>(
+                          selector: (state) => state.cityController,
+                          builder: (context, cityController) {
+                            return CustomTextFormField(
+                                focusNode: FocusNode(),
+                                autofocus: true,
+                                controller: cityController,
+                                hintText: "lbl_city".tr,
+                                margin: getMargin(left: 28, top: 20, right: 29),
+                                variant:
+                                    TextFormFieldVariant.OutlineBluegray900,
+                                padding: TextFormFieldPadding.PaddingT21,
+                                fontStyle:
+                                    TextFormFieldFontStyle.RobotoRomanMedium15,
+                                textInputAction: TextInputAction.done,
+                                prefix: Container(
+                                    margin: getMargin(
+                                        left: 21,
+                                        top: 15,
+                                        right: 15,
+                                        bottom: 15),
+                                    child: CustomImageView(
+                                        svgPath: ImageConstant.imgFrame302)),
+                                prefixConstraints: BoxConstraints(
+                                    maxHeight: getVerticalSize(60)));
+                          }),
                       CustomButton(
                           height: getVerticalSize(49),
                           width: getHorizontalSize(188),
-                          text: "Submit",
+                          text: "lbl_submit".tr,
                           margin: getMargin(top: 49),
                           onTap: () {
                             onTapSubmit(context);
@@ -152,7 +197,7 @@ class ProfileOneScreen extends StatelessWidget {
                           },
                           child: Padding(
                               padding: getPadding(top: 26, bottom: 5),
-                              child: Text("Skip",
+                              child: Text("lbl_skip".tr,
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
                                   style: AppStyle.txtPoppinsRegular20BlueA400
@@ -163,10 +208,14 @@ class ProfileOneScreen extends StatelessWidget {
   }
 
   onTapSubmit(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.homeContainerScreen);
+    NavigatorService.pushNamed(
+      AppRoutes.homeContainerScreen,
+    );
   }
 
   onTapTxtSkip(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.homeContainerScreen);
+    NavigatorService.pushNamed(
+      AppRoutes.homeContainerScreen,
+    );
   }
 }

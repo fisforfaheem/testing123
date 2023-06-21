@@ -1,3 +1,5 @@
+import 'bloc/score_bloc.dart';
+import 'models/score_model.dart';
 import 'package:faheem_s_application/core/app_export.dart';
 import 'package:faheem_s_application/widgets/app_bar/appbar_image.dart';
 import 'package:faheem_s_application/widgets/app_bar/custom_app_bar.dart';
@@ -7,19 +9,13 @@ import 'package:faheem_s_application/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-// ignore_for_file: must_be_immutable
 class ScoreScreen extends StatelessWidget {
-  TextEditingController bodylanguageController = TextEditingController();
-
-  TextEditingController bodylanguageController1 = TextEditingController();
-
-  TextEditingController bodylanguageController2 = TextEditingController();
-
-  TextEditingController bodylanguageController3 = TextEditingController();
-
-  TextEditingController bodylanguageController4 = TextEditingController();
-
-  bool isCheckbox = false;
+  static Widget builder(BuildContext context) {
+    return BlocProvider<ScoreBloc>(
+        create: (context) => ScoreBloc(ScoreState(scoreModelObj: ScoreModel()))
+          ..add(ScoreInitialEvent()),
+        child: ScoreScreen());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +59,7 @@ class ScoreScreen extends StatelessWidget {
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text("Here’s your score!",
+                          Text("msg_here_s_your_score".tr,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               style: AppStyle.txtPoppinsSemiBold32WhiteA700),
@@ -131,7 +127,7 @@ class ScoreScreen extends StatelessWidget {
                                                                         children: [
                                                                           Padding(
                                                                               padding: getPadding(top: 4),
-                                                                              child: Text("Basic Skills", overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: AppStyle.txtPoppinsRegular14Black900)),
+                                                                              child: Text("lbl_basic_skills".tr, overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: AppStyle.txtPoppinsRegular14Black900)),
                                                                           Padding(
                                                                               padding: getPadding(left: 84, bottom: 5),
                                                                               child: RatingBar.builder(
@@ -148,20 +144,24 @@ class ScoreScreen extends StatelessWidget {
                                                                                     return Icon(Icons.star, color: ColorConstant.yellow700);
                                                                                   }))
                                                                         ]),
-                                                                    CustomTextFormField(
-                                                                        focusNode:
-                                                                            FocusNode(),
-                                                                        autofocus:
-                                                                            true,
-                                                                        controller:
-                                                                            bodylanguageController,
-                                                                        hintText:
-                                                                            "85% Good",
-                                                                        variant:
-                                                                            TextFormFieldVariant
-                                                                                .UnderLineGray500,
-                                                                        fontStyle:
-                                                                            TextFormFieldFontStyle.PoppinsLight10),
+                                                                    BlocSelector<
+                                                                            ScoreBloc,
+                                                                            ScoreState,
+                                                                            TextEditingController?>(
+                                                                        selector: (state) =>
+                                                                            state
+                                                                                .bodylanguageController,
+                                                                        builder:
+                                                                            (context,
+                                                                                bodylanguageController) {
+                                                                          return CustomTextFormField(
+                                                                              focusNode: FocusNode(),
+                                                                              autofocus: true,
+                                                                              controller: bodylanguageController,
+                                                                              hintText: "lbl_85_good".tr,
+                                                                              variant: TextFormFieldVariant.UnderLineGray500,
+                                                                              fontStyle: TextFormFieldFontStyle.PoppinsLight10);
+                                                                        }),
                                                                     Container(
                                                                         height: getVerticalSize(
                                                                             46),
@@ -192,8 +192,12 @@ class ScoreScreen extends StatelessWidget {
                                                                               Align(
                                                                                   alignment: Alignment.center,
                                                                                   child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
-                                                                                    Text("Body Language", overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: AppStyle.txtPoppinsRegular14Black900),
-                                                                                    CustomTextFormField(focusNode: FocusNode(), autofocus: true, controller: bodylanguageController1, hintText: "85% Good", variant: TextFormFieldVariant.UnderLineGray500, fontStyle: TextFormFieldFontStyle.PoppinsLight10)
+                                                                                    Text("lbl_body_language".tr, overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: AppStyle.txtPoppinsRegular14Black900),
+                                                                                    BlocSelector<ScoreBloc, ScoreState, TextEditingController?>(
+                                                                                        selector: (state) => state.bodylanguageController1,
+                                                                                        builder: (context, bodylanguageController1) {
+                                                                                          return CustomTextFormField(focusNode: FocusNode(), autofocus: true, controller: bodylanguageController1, hintText: "lbl_85_good".tr, variant: TextFormFieldVariant.UnderLineGray500, fontStyle: TextFormFieldFontStyle.PoppinsLight10);
+                                                                                        })
                                                                                   ]))
                                                                             ])),
                                                                     Container(
@@ -226,8 +230,12 @@ class ScoreScreen extends StatelessWidget {
                                                                               Align(
                                                                                   alignment: Alignment.bottomCenter,
                                                                                   child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
-                                                                                    Text("Eye Contact", overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: AppStyle.txtPoppinsRegular14Black900),
-                                                                                    CustomTextFormField(focusNode: FocusNode(), autofocus: true, controller: bodylanguageController2, hintText: "85% Good", variant: TextFormFieldVariant.UnderLineGray500, fontStyle: TextFormFieldFontStyle.PoppinsLight10)
+                                                                                    Text("lbl_eye_contact".tr, overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: AppStyle.txtPoppinsRegular14Black900),
+                                                                                    BlocSelector<ScoreBloc, ScoreState, TextEditingController?>(
+                                                                                        selector: (state) => state.bodylanguageController2,
+                                                                                        builder: (context, bodylanguageController2) {
+                                                                                          return CustomTextFormField(focusNode: FocusNode(), autofocus: true, controller: bodylanguageController2, hintText: "lbl_85_good".tr, variant: TextFormFieldVariant.UnderLineGray500, fontStyle: TextFormFieldFontStyle.PoppinsLight10);
+                                                                                        })
                                                                                   ]))
                                                                             ])),
                                                                     Container(
@@ -260,8 +268,12 @@ class ScoreScreen extends StatelessWidget {
                                                                               Align(
                                                                                   alignment: Alignment.center,
                                                                                   child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
-                                                                                    Text("Confidence Level", overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: AppStyle.txtPoppinsRegular14Black900),
-                                                                                    CustomTextFormField(focusNode: FocusNode(), autofocus: true, controller: bodylanguageController3, hintText: "85% Good", variant: TextFormFieldVariant.UnderLineGray500, fontStyle: TextFormFieldFontStyle.PoppinsLight10)
+                                                                                    Text("msg_confidence_level".tr, overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, style: AppStyle.txtPoppinsRegular14Black900),
+                                                                                    BlocSelector<ScoreBloc, ScoreState, TextEditingController?>(
+                                                                                        selector: (state) => state.bodylanguageController3,
+                                                                                        builder: (context, bodylanguageController3) {
+                                                                                          return CustomTextFormField(focusNode: FocusNode(), autofocus: true, controller: bodylanguageController3, hintText: "lbl_85_good".tr, variant: TextFormFieldVariant.UnderLineGray500, fontStyle: TextFormFieldFontStyle.PoppinsLight10);
+                                                                                        })
                                                                                   ]))
                                                                             ])),
                                                                     Padding(
@@ -300,7 +312,8 @@ class ScoreScreen extends StatelessWidget {
                                                                           .start,
                                                                   children: [
                                                                     Text(
-                                                                        "Verbal Behavior",
+                                                                        "lbl_verbal_behavior"
+                                                                            .tr,
                                                                         overflow:
                                                                             TextOverflow
                                                                                 .ellipsis,
@@ -309,23 +322,25 @@ class ScoreScreen extends StatelessWidget {
                                                                                 .left,
                                                                         style: AppStyle
                                                                             .txtPoppinsRegular14Black900),
-                                                                    CustomTextFormField(
-                                                                        focusNode:
-                                                                            FocusNode(),
-                                                                        autofocus:
-                                                                            true,
-                                                                        controller:
-                                                                            bodylanguageController4,
-                                                                        hintText:
-                                                                            "85% Good",
-                                                                        variant:
-                                                                            TextFormFieldVariant
-                                                                                .UnderLineGray500,
-                                                                        fontStyle:
-                                                                            TextFormFieldFontStyle
-                                                                                .PoppinsLight10,
-                                                                        textInputAction:
-                                                                            TextInputAction.done)
+                                                                    BlocSelector<
+                                                                            ScoreBloc,
+                                                                            ScoreState,
+                                                                            TextEditingController?>(
+                                                                        selector: (state) =>
+                                                                            state
+                                                                                .bodylanguageController4,
+                                                                        builder:
+                                                                            (context,
+                                                                                bodylanguageController4) {
+                                                                          return CustomTextFormField(
+                                                                              focusNode: FocusNode(),
+                                                                              autofocus: true,
+                                                                              controller: bodylanguageController4,
+                                                                              hintText: "lbl_85_good".tr,
+                                                                              variant: TextFormFieldVariant.UnderLineGray500,
+                                                                              fontStyle: TextFormFieldFontStyle.PoppinsLight10,
+                                                                              textInputAction: TextInputAction.done);
+                                                                        })
                                                                   ])))
                                                     ])))),
                                     Align(
@@ -410,15 +425,29 @@ class ScoreScreen extends StatelessWidget {
                                       children: [
                                         Align(
                                             alignment: Alignment.bottomCenter,
-                                            child: CustomCheckbox(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                text: "Play recorded interview",
-                                                value: isCheckbox,
-                                                fontStyle: CheckboxFontStyle
-                                                    .RobotoMedium24,
-                                                onChange: (value) {
-                                                  isCheckbox = value;
+                                            child: BlocSelector<ScoreBloc,
+                                                    ScoreState, bool?>(
+                                                selector: (state) =>
+                                                    state.isCheckbox,
+                                                builder: (context, isCheckbox) {
+                                                  return CustomCheckbox(
+                                                      alignment: Alignment
+                                                          .bottomCenter,
+                                                      text:
+                                                          "msg_play_recorded_interview"
+                                                              .tr,
+                                                      value: isCheckbox,
+                                                      fontStyle:
+                                                          CheckboxFontStyle
+                                                              .RobotoMedium24,
+                                                      onChange: (value) {
+                                                        context
+                                                            .read<ScoreBloc>()
+                                                            .add(
+                                                                ChangeCheckBoxEvent(
+                                                                    value:
+                                                                        value));
+                                                      });
                                                 })),
                                         CustomImageView(
                                             imagePath:
@@ -430,7 +459,7 @@ class ScoreScreen extends StatelessWidget {
                           CustomButton(
                               height: getVerticalSize(49),
                               width: getHorizontalSize(188),
-                              text: "Try Again",
+                              text: "lbl_try_again".tr,
                               margin: getMargin(top: 45, bottom: 5),
                               variant: ButtonVariant.OutlineGray600,
                               fontStyle:
@@ -442,10 +471,12 @@ class ScoreScreen extends StatelessWidget {
   }
 
   onTapTryagain(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.homeContainerScreen);
+    NavigatorService.pushNamed(
+      AppRoutes.homeContainerScreen,
+    );
   }
 
   onTapArrowleft2(BuildContext context) {
-    Navigator.pop(context);
+    NavigatorService.goBack();
   }
 }

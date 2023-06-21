@@ -16,22 +16,22 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   List<BottomMenuModel> bottomMenuList = [
     BottomMenuModel(
       icon: ImageConstant.imgHome,
-      title: "Home",
+      title: "lbl_home".tr,
       type: BottomBarEnum.Home,
     ),
     BottomMenuModel(
       icon: ImageConstant.imgOnlineinterview,
-      title: "Interview",
+      title: "lbl_interview".tr,
       type: BottomBarEnum.Interview,
     ),
     BottomMenuModel(
       icon: ImageConstant.imgUserBlueGray900,
-      title: "Profile",
+      title: "lbl_profile".tr,
       type: BottomBarEnum.Profile,
     ),
     BottomMenuModel(
       icon: ImageConstant.imgSettings,
-      title: "Settings",
+      title: "lbl_settings".tr,
       type: BottomBarEnum.Settings,
     )
   ];

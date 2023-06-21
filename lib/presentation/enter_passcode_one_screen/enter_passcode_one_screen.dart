@@ -1,3 +1,5 @@
+import 'bloc/enter_passcode_one_bloc.dart';
+import 'models/enter_passcode_one_model.dart';
 import 'package:faheem_s_application/core/app_export.dart';
 import 'package:faheem_s_application/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,14 @@ import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class EnterPasscodeOneScreen extends StatelessWidget {
+  static Widget builder(BuildContext context) {
+    return BlocProvider<EnterPasscodeOneBloc>(
+        create: (context) => EnterPasscodeOneBloc(EnterPasscodeOneState(
+            enterPasscodeOneModelObj: EnterPasscodeOneModel()))
+          ..add(EnterPasscodeOneInitialEvent()),
+        child: EnterPasscodeOneScreen());
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -60,15 +70,14 @@ class EnterPasscodeOneScreen extends StatelessWidget {
                           child: RichText(
                               text: TextSpan(children: [
                                 TextSpan(
-                                    text:
-                                        "A verification email with a passcode has been send to your registered email \n",
+                                    text: "msg_a_verification_email2".tr,
                                     style: TextStyle(
                                         color: ColorConstant.black900,
                                         fontSize: getFontSize(16),
                                         fontFamily: 'Poppins',
                                         fontWeight: FontWeight.w400)),
                                 TextSpan(
-                                    text: "amarahmed43@gmail.com",
+                                    text: "msg_amarahmed43_gmail_com".tr,
                                     style: TextStyle(
                                         color: ColorConstant.black900,
                                         fontSize: getFontSize(16),
@@ -78,39 +87,52 @@ class EnterPasscodeOneScreen extends StatelessWidget {
                               textAlign: TextAlign.center)),
                       Padding(
                           padding: getPadding(top: 24),
-                          child: Text("Enter the 4-digit passcode",
+                          child: Text("msg_enter_the_4_digit".tr,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               style: AppStyle.txtPoppinsRegular16)),
                       Padding(
                           padding: getPadding(top: 27),
-                          child: PinCodeTextField(
-                              appContext: context,
-                              length: 4,
-                              obscureText: false,
-                              obscuringCharacter: '*',
-                              keyboardType: TextInputType.number,
-                              autoDismissKeyboard: true,
-                              enableActiveFill: true,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              onChanged: (value) {},
-                              pinTheme: PinTheme(
-                                  fieldHeight: getHorizontalSize(60),
-                                  fieldWidth: getHorizontalSize(58),
-                                  shape: PinCodeFieldShape.box,
-                                  borderRadius: BorderRadius.circular(
-                                      getHorizontalSize(6)),
-                                  selectedFillColor:
-                                      ColorConstant.fromHex("#1212121D"),
-                                  activeFillColor:
-                                      ColorConstant.fromHex("#1212121D"),
-                                  inactiveFillColor:
-                                      ColorConstant.fromHex("#1212121D"),
-                                  inactiveColor: ColorConstant.blueGray900,
-                                  selectedColor: ColorConstant.blueGray900,
-                                  activeColor: ColorConstant.blueGray900))),
+                          child: BlocSelector<
+                                  EnterPasscodeOneBloc,
+                                  EnterPasscodeOneState,
+                                  TextEditingController?>(
+                              selector: (state) => state.otpController,
+                              builder: (context, otpController) {
+                                return PinCodeTextField(
+                                    appContext: context,
+                                    controller: otpController,
+                                    length: 4,
+                                    obscureText: false,
+                                    obscuringCharacter: '*',
+                                    keyboardType: TextInputType.number,
+                                    autoDismissKeyboard: true,
+                                    enableActiveFill: true,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    onChanged: (value) {
+                                      otpController?.text = value;
+                                    },
+                                    pinTheme: PinTheme(
+                                        fieldHeight: getHorizontalSize(60),
+                                        fieldWidth: getHorizontalSize(58),
+                                        shape: PinCodeFieldShape.box,
+                                        borderRadius: BorderRadius.circular(
+                                            getHorizontalSize(6)),
+                                        selectedFillColor:
+                                            ColorConstant.fromHex("#1212121D"),
+                                        activeFillColor:
+                                            ColorConstant.fromHex("#1212121D"),
+                                        inactiveFillColor:
+                                            ColorConstant.fromHex("#1212121D"),
+                                        inactiveColor:
+                                            ColorConstant.blueGray900,
+                                        selectedColor:
+                                            ColorConstant.blueGray900,
+                                        activeColor:
+                                            ColorConstant.blueGray900));
+                              })),
                       Align(
                           alignment: Alignment.centerRight,
                           child: Padding(
@@ -120,7 +142,7 @@ class EnterPasscodeOneScreen extends StatelessWidget {
                                   children: [
                                     Padding(
                                         padding: getPadding(top: 1),
-                                        child: Text("Send again in",
+                                        child: Text("lbl_send_again_in".tr,
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.left,
                                             style: AppStyle.txtPoppinsRegular16
@@ -129,7 +151,7 @@ class EnterPasscodeOneScreen extends StatelessWidget {
                                                         .underline))),
                                     Padding(
                                         padding: getPadding(left: 8, bottom: 1),
-                                        child: Text("00:54",
+                                        child: Text("lbl_00_54".tr,
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.left,
                                             style:
@@ -138,12 +160,12 @@ class EnterPasscodeOneScreen extends StatelessWidget {
                       CustomButton(
                           height: getVerticalSize(49),
                           width: getHorizontalSize(188),
-                          text: "Verify",
+                          text: "lbl_verify".tr,
                           margin: getMargin(top: 37)),
                       Spacer(),
                       Padding(
                           padding: getPadding(bottom: 139),
-                          child: Text("Terms & Conditions Applied",
+                          child: Text("msg_terms_conditions".tr,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               style: AppStyle.txtPoppinsRegular16Gray500))
@@ -151,6 +173,6 @@ class EnterPasscodeOneScreen extends StatelessWidget {
   }
 
   onTapImgArrowleft(BuildContext context) {
-    Navigator.pop(context);
+    NavigatorService.goBack();
   }
 }

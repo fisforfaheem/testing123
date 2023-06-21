@@ -1,4 +1,7 @@
+import 'bloc/profile_bloc.dart';
+import 'models/profile_model.dart';
 import 'package:faheem_s_application/core/app_export.dart';
+import 'package:faheem_s_application/core/utils/validation_functions.dart';
 import 'package:faheem_s_application/presentation/home_page/home_page.dart';
 import 'package:faheem_s_application/widgets/custom_bottom_bar.dart';
 import 'package:faheem_s_application/widgets/custom_button.dart';
@@ -7,33 +10,17 @@ import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
 class ProfileScreen extends StatelessWidget {
-  TextEditingController fullnameoneController = TextEditingController();
-
-  TextEditingController dateofbirthController = TextEditingController();
-
-  TextEditingController phoneController = TextEditingController();
-
-  TextEditingController emailoneController = TextEditingController();
-
-  TextEditingController statelayerController = TextEditingController();
-
-  TextEditingController statelayeroneController = TextEditingController();
-
-  TextEditingController statelayertwoController = TextEditingController();
-
-  TextEditingController statelayerController1 = TextEditingController();
-
-  TextEditingController statelayerfourController = TextEditingController();
-
-  TextEditingController statelayerfiveController = TextEditingController();
-
-  TextEditingController statelayersixController = TextEditingController();
-
-  TextEditingController statelayerController2 = TextEditingController();
-
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  static Widget builder(BuildContext context) {
+    return BlocProvider<ProfileBloc>(
+        create: (context) =>
+            ProfileBloc(ProfileState(profileModelObj: ProfileModel()))
+              ..add(ProfileInitialEvent()),
+        child: ProfileScreen());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +100,8 @@ class ProfileScreen extends StatelessWidget {
                                                       padding: getPadding(
                                                           top: 98, right: 29),
                                                       child: Text(
-                                                          "Please Fill Your Profile.",
+                                                          "msg_please_fill_your"
+                                                              .tr,
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           textAlign:
@@ -124,7 +112,8 @@ class ProfileScreen extends StatelessWidget {
                                                   alignment:
                                                       Alignment.centerRight,
                                                   child: Text(
-                                                      "We’re excited to know more about you!",
+                                                      "msg_we_re_excited_to2"
+                                                          .tr,
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       textAlign: TextAlign.left,
@@ -191,7 +180,8 @@ class ProfileScreen extends StatelessWidget {
                                                                         bottom:
                                                                             32),
                                                                 child: Text(
-                                                                    "Upload Photo",
+                                                                    "lbl_upload_photo"
+                                                                        .tr,
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
@@ -224,23 +214,35 @@ class ProfileScreen extends StatelessWidget {
                                           endIndent: getHorizontalSize(42)))),
                               Padding(
                                   padding: getPadding(left: 64, top: 22),
-                                  child: Text("Full Name",
+                                  child: Text("lbl_full_name".tr,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtRobotoRegular16
                                           .copyWith(
                                               letterSpacing:
                                                   getHorizontalSize(0.5)))),
-                              CustomTextFormField(
-                                  width: getHorizontalSize(245),
-                                  focusNode: FocusNode(),
-                                  autofocus: true,
-                                  controller: fullnameoneController,
-                                  hintText: "Please Enter Your Full Name",
-                                  margin: getMargin(left: 64, top: 9)),
+                              BlocSelector<ProfileBloc, ProfileState,
+                                      TextEditingController?>(
+                                  selector: (state) =>
+                                      state.fullnameoneController,
+                                  builder: (context, fullnameoneController) {
+                                    return CustomTextFormField(
+                                        width: getHorizontalSize(245),
+                                        focusNode: FocusNode(),
+                                        autofocus: true,
+                                        controller: fullnameoneController,
+                                        hintText: "msg_please_enter_your2".tr,
+                                        margin: getMargin(left: 64, top: 9),
+                                        validator: (value) {
+                                          if (!isText(value)) {
+                                            return "Please enter valid text";
+                                          }
+                                          return null;
+                                        });
+                                  }),
                               Padding(
                                   padding: getPadding(left: 64, top: 13),
-                                  child: Text("Gender",
+                                  child: Text("lbl_gender".tr,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtRobotoRegular16
@@ -253,7 +255,7 @@ class ProfileScreen extends StatelessWidget {
                                     CustomButton(
                                         height: getVerticalSize(56),
                                         width: getHorizontalSize(69),
-                                        text: "Male",
+                                        text: "lbl_male".tr,
                                         variant: ButtonVariant.OutlineGray9001e,
                                         shape: ButtonShape.RoundedBorder6,
                                         padding: ButtonPadding.PaddingT18,
@@ -262,7 +264,7 @@ class ProfileScreen extends StatelessWidget {
                                     CustomButton(
                                         height: getVerticalSize(56),
                                         width: getHorizontalSize(87),
-                                        text: "Female",
+                                        text: "lbl_female".tr,
                                         margin: getMargin(left: 7),
                                         variant: ButtonVariant.OutlineGray9001e,
                                         shape: ButtonShape.RoundedBorder6,
@@ -272,85 +274,128 @@ class ProfileScreen extends StatelessWidget {
                                   ])),
                               Padding(
                                   padding: getPadding(left: 64, top: 13),
-                                  child: Text("Date of Birth",
+                                  child: Text("lbl_date_of_birth".tr,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtRobotoRegular16
                                           .copyWith(
                                               letterSpacing:
                                                   getHorizontalSize(0.5)))),
-                              CustomTextFormField(
-                                  width: getHorizontalSize(245),
-                                  focusNode: FocusNode(),
-                                  autofocus: true,
-                                  controller: dateofbirthController,
-                                  hintText: "DD/MM/YYYY",
-                                  margin: getMargin(left: 64, top: 9)),
+                              BlocSelector<ProfileBloc, ProfileState,
+                                      TextEditingController?>(
+                                  selector: (state) =>
+                                      state.dateofbirthController,
+                                  builder: (context, dateofbirthController) {
+                                    return CustomTextFormField(
+                                        width: getHorizontalSize(245),
+                                        focusNode: FocusNode(),
+                                        autofocus: true,
+                                        controller: dateofbirthController,
+                                        hintText: "lbl_dd_mm_yyyy".tr,
+                                        margin: getMargin(left: 64, top: 9));
+                                  }),
                               Padding(
                                   padding: getPadding(left: 64, top: 13),
-                                  child: Text("Phone No.",
+                                  child: Text("lbl_phone_no".tr,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtRobotoRegular16
                                           .copyWith(
                                               letterSpacing:
                                                   getHorizontalSize(0.5)))),
-                              CustomTextFormField(
-                                  width: getHorizontalSize(245),
-                                  focusNode: FocusNode(),
-                                  autofocus: true,
-                                  controller: phoneController,
-                                  hintText: "Please Enter Your Phone No.",
-                                  margin: getMargin(left: 64, top: 9),
-                                  textInputType: TextInputType.phone),
+                              BlocSelector<ProfileBloc, ProfileState,
+                                      TextEditingController?>(
+                                  selector: (state) => state.phoneController,
+                                  builder: (context, phoneController) {
+                                    return CustomTextFormField(
+                                        width: getHorizontalSize(245),
+                                        focusNode: FocusNode(),
+                                        autofocus: true,
+                                        controller: phoneController,
+                                        hintText: "msg_please_enter_your3".tr,
+                                        margin: getMargin(left: 64, top: 9),
+                                        textInputType: TextInputType.phone,
+                                        validator: (value) {
+                                          if (!isValidPhone(value)) {
+                                            return "Please enter valid phone number";
+                                          }
+                                          return null;
+                                        });
+                                  }),
                               Padding(
                                   padding: getPadding(left: 64, top: 13),
-                                  child: Text("Email",
+                                  child: Text("lbl_email".tr,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtRobotoRegular16
                                           .copyWith(
                                               letterSpacing:
                                                   getHorizontalSize(0.5)))),
-                              CustomTextFormField(
-                                  width: getHorizontalSize(245),
-                                  focusNode: FocusNode(),
-                                  autofocus: true,
-                                  controller: emailoneController,
-                                  hintText: "Please Enter Your Email",
-                                  margin: getMargin(left: 64, top: 9),
-                                  textInputType: TextInputType.emailAddress),
+                              BlocSelector<ProfileBloc, ProfileState,
+                                      TextEditingController?>(
+                                  selector: (state) => state.emailoneController,
+                                  builder: (context, emailoneController) {
+                                    return CustomTextFormField(
+                                        width: getHorizontalSize(245),
+                                        focusNode: FocusNode(),
+                                        autofocus: true,
+                                        controller: emailoneController,
+                                        hintText: "msg_please_enter_your4".tr,
+                                        margin: getMargin(left: 64, top: 9),
+                                        textInputType:
+                                            TextInputType.emailAddress,
+                                        validator: (value) {
+                                          if (value == null ||
+                                              (!isValidEmail(value,
+                                                  isRequired: true))) {
+                                            return "Please enter valid email";
+                                          }
+                                          return null;
+                                        });
+                                  }),
                               Padding(
                                   padding: getPadding(left: 64, top: 13),
-                                  child: Text("Education",
+                                  child: Text("lbl_education".tr,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtRobotoRegular16
                                           .copyWith(
                                               letterSpacing:
                                                   getHorizontalSize(0.5)))),
-                              CustomTextFormField(
-                                  focusNode: FocusNode(),
-                                  autofocus: true,
-                                  controller: statelayerController,
-                                  hintText: "Please Enter Your Education level",
-                                  margin:
-                                      getMargin(left: 64, top: 9, right: 57),
-                                  alignment: Alignment.center),
-                              CustomTextFormField(
-                                  focusNode: FocusNode(),
-                                  autofocus: true,
-                                  controller: statelayeroneController,
-                                  hintText: "Please Enter Your Education level",
-                                  margin:
-                                      getMargin(left: 64, top: 5, right: 57),
-                                  alignment: Alignment.center),
+                              BlocSelector<ProfileBloc, ProfileState,
+                                      TextEditingController?>(
+                                  selector: (state) =>
+                                      state.statelayerController,
+                                  builder: (context, statelayerController) {
+                                    return CustomTextFormField(
+                                        focusNode: FocusNode(),
+                                        autofocus: true,
+                                        controller: statelayerController,
+                                        hintText: "msg_please_enter_your5".tr,
+                                        margin: getMargin(
+                                            left: 64, top: 9, right: 57),
+                                        alignment: Alignment.center);
+                                  }),
+                              BlocSelector<ProfileBloc, ProfileState,
+                                      TextEditingController?>(
+                                  selector: (state) =>
+                                      state.statelayeroneController,
+                                  builder: (context, statelayeroneController) {
+                                    return CustomTextFormField(
+                                        focusNode: FocusNode(),
+                                        autofocus: true,
+                                        controller: statelayeroneController,
+                                        hintText: "msg_please_enter_your5".tr,
+                                        margin: getMargin(
+                                            left: 64, top: 5, right: 57),
+                                        alignment: Alignment.center);
+                                  }),
                               Align(
                                   alignment: Alignment.centerRight,
                                   child: Container(
                                       width: getHorizontalSize(60),
                                       margin: getMargin(top: 5, right: 160),
-                                      child: Text("+ Add More",
+                                      child: Text("lbl_add_more".tr,
                                           maxLines: null,
                                           textAlign: TextAlign.center,
                                           style: AppStyle
@@ -361,34 +406,46 @@ class ProfileScreen extends StatelessWidget {
                               Container(
                                   width: getHorizontalSize(91),
                                   margin: getMargin(left: 64, top: 5),
-                                  child: Text("Experience",
+                                  child: Text("lbl_experience".tr,
                                       maxLines: null,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtRobotoRegular16
                                           .copyWith(
                                               letterSpacing:
                                                   getHorizontalSize(0.5)))),
-                              CustomTextFormField(
-                                  focusNode: FocusNode(),
-                                  autofocus: true,
-                                  controller: statelayertwoController,
-                                  hintText: "Please Enter Your Experience",
-                                  margin: getMargin(left: 64, right: 57),
-                                  alignment: Alignment.center),
-                              CustomTextFormField(
-                                  focusNode: FocusNode(),
-                                  autofocus: true,
-                                  controller: statelayerController1,
-                                  hintText: "Please Enter Your Experience",
-                                  margin:
-                                      getMargin(left: 64, top: 5, right: 57),
-                                  alignment: Alignment.center),
+                              BlocSelector<ProfileBloc, ProfileState,
+                                      TextEditingController?>(
+                                  selector: (state) =>
+                                      state.statelayertwoController,
+                                  builder: (context, statelayertwoController) {
+                                    return CustomTextFormField(
+                                        focusNode: FocusNode(),
+                                        autofocus: true,
+                                        controller: statelayertwoController,
+                                        hintText: "msg_please_enter_your6".tr,
+                                        margin: getMargin(left: 64, right: 57),
+                                        alignment: Alignment.center);
+                                  }),
+                              BlocSelector<ProfileBloc, ProfileState,
+                                      TextEditingController?>(
+                                  selector: (state) =>
+                                      state.statelayerController1,
+                                  builder: (context, statelayerController1) {
+                                    return CustomTextFormField(
+                                        focusNode: FocusNode(),
+                                        autofocus: true,
+                                        controller: statelayerController1,
+                                        hintText: "msg_please_enter_your6".tr,
+                                        margin: getMargin(
+                                            left: 64, top: 5, right: 57),
+                                        alignment: Alignment.center);
+                                  }),
                               Align(
                                   alignment: Alignment.centerRight,
                                   child: Container(
                                       width: getHorizontalSize(60),
                                       margin: getMargin(top: 5, right: 160),
-                                      child: Text("+ Add More",
+                                      child: Text("lbl_add_more".tr,
                                           maxLines: null,
                                           textAlign: TextAlign.center,
                                           style: AppStyle
@@ -399,34 +456,46 @@ class ProfileScreen extends StatelessWidget {
                               Container(
                                   width: getHorizontalSize(91),
                                   margin: getMargin(left: 64, top: 5),
-                                  child: Text("Skills ",
+                                  child: Text("lbl_skills".tr,
                                       maxLines: null,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtRobotoRegular16
                                           .copyWith(
                                               letterSpacing:
                                                   getHorizontalSize(0.5)))),
-                              CustomTextFormField(
-                                  focusNode: FocusNode(),
-                                  autofocus: true,
-                                  controller: statelayerfourController,
-                                  hintText: "Please Enter Your Experience",
-                                  margin: getMargin(left: 64, right: 57),
-                                  alignment: Alignment.center),
-                              CustomTextFormField(
-                                  focusNode: FocusNode(),
-                                  autofocus: true,
-                                  controller: statelayerfiveController,
-                                  hintText: "Please Enter Your Experience",
-                                  margin:
-                                      getMargin(left: 64, top: 5, right: 57),
-                                  alignment: Alignment.center),
+                              BlocSelector<ProfileBloc, ProfileState,
+                                      TextEditingController?>(
+                                  selector: (state) =>
+                                      state.statelayerfourController,
+                                  builder: (context, statelayerfourController) {
+                                    return CustomTextFormField(
+                                        focusNode: FocusNode(),
+                                        autofocus: true,
+                                        controller: statelayerfourController,
+                                        hintText: "msg_please_enter_your6".tr,
+                                        margin: getMargin(left: 64, right: 57),
+                                        alignment: Alignment.center);
+                                  }),
+                              BlocSelector<ProfileBloc, ProfileState,
+                                      TextEditingController?>(
+                                  selector: (state) =>
+                                      state.statelayerfiveController,
+                                  builder: (context, statelayerfiveController) {
+                                    return CustomTextFormField(
+                                        focusNode: FocusNode(),
+                                        autofocus: true,
+                                        controller: statelayerfiveController,
+                                        hintText: "msg_please_enter_your6".tr,
+                                        margin: getMargin(
+                                            left: 64, top: 5, right: 57),
+                                        alignment: Alignment.center);
+                                  }),
                               Align(
                                   alignment: Alignment.centerRight,
                                   child: Container(
                                       width: getHorizontalSize(60),
                                       margin: getMargin(top: 5, right: 160),
-                                      child: Text("+ Add More",
+                                      child: Text("lbl_add_more".tr,
                                           maxLines: null,
                                           textAlign: TextAlign.center,
                                           style: AppStyle
@@ -437,35 +506,47 @@ class ProfileScreen extends StatelessWidget {
                               Container(
                                   width: getHorizontalSize(181),
                                   margin: getMargin(left: 64, top: 5),
-                                  child: Text("Certifications & Awards",
+                                  child: Text("msg_certifications".tr,
                                       maxLines: null,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtRobotoRegular16
                                           .copyWith(
                                               letterSpacing:
                                                   getHorizontalSize(0.5)))),
-                              CustomTextFormField(
-                                  focusNode: FocusNode(),
-                                  autofocus: true,
-                                  controller: statelayersixController,
-                                  hintText: "Please Enter Your Experience",
-                                  margin: getMargin(left: 64, right: 57),
-                                  alignment: Alignment.center),
-                              CustomTextFormField(
-                                  focusNode: FocusNode(),
-                                  autofocus: true,
-                                  controller: statelayerController2,
-                                  hintText: "Please Enter Your Experience",
-                                  margin:
-                                      getMargin(left: 64, top: 5, right: 57),
-                                  textInputAction: TextInputAction.done,
-                                  alignment: Alignment.center),
+                              BlocSelector<ProfileBloc, ProfileState,
+                                      TextEditingController?>(
+                                  selector: (state) =>
+                                      state.statelayersixController,
+                                  builder: (context, statelayersixController) {
+                                    return CustomTextFormField(
+                                        focusNode: FocusNode(),
+                                        autofocus: true,
+                                        controller: statelayersixController,
+                                        hintText: "msg_please_enter_your6".tr,
+                                        margin: getMargin(left: 64, right: 57),
+                                        alignment: Alignment.center);
+                                  }),
+                              BlocSelector<ProfileBloc, ProfileState,
+                                      TextEditingController?>(
+                                  selector: (state) =>
+                                      state.statelayerController2,
+                                  builder: (context, statelayerController2) {
+                                    return CustomTextFormField(
+                                        focusNode: FocusNode(),
+                                        autofocus: true,
+                                        controller: statelayerController2,
+                                        hintText: "msg_please_enter_your6".tr,
+                                        margin: getMargin(
+                                            left: 64, top: 5, right: 57),
+                                        textInputAction: TextInputAction.done,
+                                        alignment: Alignment.center);
+                                  }),
                               Align(
                                   alignment: Alignment.centerRight,
                                   child: Container(
                                       width: getHorizontalSize(60),
                                       margin: getMargin(top: 5, right: 160),
-                                      child: Text("+ Add More",
+                                      child: Text("lbl_add_more".tr,
                                           maxLines: null,
                                           textAlign: TextAlign.center,
                                           style: AppStyle
@@ -476,7 +557,7 @@ class ProfileScreen extends StatelessWidget {
                               CustomButton(
                                   height: getVerticalSize(49),
                                   width: getHorizontalSize(188),
-                                  text: "Save",
+                                  text: "lbl_save".tr,
                                   margin: getMargin(top: 42, right: 96),
                                   onTap: () {
                                     onTapSave(context);
@@ -487,8 +568,7 @@ class ProfileScreen extends StatelessWidget {
                                   child: Container(
                                       width: getHorizontalSize(192),
                                       margin: getMargin(top: 49, right: 94),
-                                      child: Text(
-                                          "All rights reserved to Mock First Official",
+                                      child: Text("msg_all_rights_reserved".tr,
                                           maxLines: null,
                                           textAlign: TextAlign.center,
                                           style: AppStyle.txtPoppinsRegular10)))
@@ -517,20 +597,25 @@ class ProfileScreen extends StatelessWidget {
   }
 
   ///Handling page based on route
-  Widget getCurrentPage(String currentRoute) {
+  Widget getCurrentPage(
+    BuildContext context,
+    String currentRoute,
+  ) {
     switch (currentRoute) {
       case AppRoutes.homePage:
-        return HomePage();
+        return HomePage.builder(context);
       default:
         return DefaultWidget();
     }
   }
 
   onTapImgArrowleft(BuildContext context) {
-    Navigator.pop(context);
+    NavigatorService.goBack();
   }
 
   onTapSave(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.homeContainerScreen);
+    NavigatorService.pushNamed(
+      AppRoutes.homeContainerScreen,
+    );
   }
 }
